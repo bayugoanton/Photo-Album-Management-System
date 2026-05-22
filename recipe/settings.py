@@ -38,14 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',  # Core engine takes priority for compilation pipeline stability
-
-    # Third-party cloud storage wrappers decoupled below core components
-    'cloudinary_storage',
+    'django.contrib.staticfiles',
+    
+    # --- YOUR APP MUST BE HERE ---
+    'gallery', 
+    
     'cloudinary',
-
-    # Active custom components
-    'gallery',
+    'cloudinary_storage',
 ]
 
 MIDDLEWARE = [
