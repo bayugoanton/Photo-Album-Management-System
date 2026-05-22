@@ -76,7 +76,8 @@ STORAGES = {
 }
 
 # Fixes legacy package lookups in Django 6.x to prevent 'Settings object has no attribute STATICFILES_STORAGE'
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+# Ensure this matches your updated CompressedStaticFilesStorage engine exactly:
+STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 
 ROOT_URLCONF = 'recipe.urls'
 
