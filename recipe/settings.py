@@ -62,11 +62,6 @@ MIDDLEWARE = [
 USE_CLOUD_STORAGE = os.getenv('USE_CLOUD_STORAGE', 'False') == 'True'
 
 if USE_CLOUD_STORAGE:
-    CLOUDINARY_STORAGE = {
-        'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
-        'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
-        'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
-    }
     DEFAULT_STORAGE_BACKEND = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 else:
     DEFAULT_STORAGE_BACKEND = 'django.core.files.storage.FileSystemStorage'
@@ -79,6 +74,9 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+
+# Fixes legacy package lookups in Django 6.x to prevent 'Settings object has no attribute STATICFILES_STORAGE'
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 ROOT_URLCONF = 'recipe.urls'
 
