@@ -1,0 +1,8 @@
+# Ignore environment variables and local databases!
+.env
+db.sqlite3
+__pycache__/
+*.pyc
+.venv/
+staticfiles/
+media/

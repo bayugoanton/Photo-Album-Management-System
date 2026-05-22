@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>Confirm Deletion</title>
+<style>body{font-family:Arial; background:#f4f6f9; display:flex; justify-content:center; align-items:center; height:100vh;}.card{background:#fff; padding:30px; border-radius:8px; width:100%; max-width:400px; text-align:center;}</style>
+</head>
+<body>
+<div class="card">
+    <h2>Are you sure?</h2>
+    <p>You are about to permanently delete <strong>"{{ photo.title }}"</strong> from both the database and Cloudinary storage hosting.</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" style="padding:10px 20px; background:#dc3545; color:white; border:none; border-radius:4px; cursor:pointer; font-weight:bold;">Yes, Confirm Delete</button>
+        <a href="{% url 'album_list' %}" style="padding:10px 20px; background:#6c757d; color:white; text-decoration:none; border-radius:4px; font-weight:bold; margin-left:10px;">Cancel</a>
+    </form>
+</div>
+</body>
+</html>

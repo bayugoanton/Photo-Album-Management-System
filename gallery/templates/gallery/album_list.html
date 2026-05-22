@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Gallery Workspace</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 20px; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; background: #343a40; padding: 10px 20px; border-radius: 6px; color: white; margin-bottom: 30px; }
+        .navbar h1 { margin: 0; font-size: 20px; }
+        .btn-logout { background-color: #dc3545; color: white; text-decoration: none; padding: 8px 15px; border-radius: 4px; font-weight: bold; font-size: 14px; }
+        .btn-logout:hover { background-color: #c82333; }
+        .container { max-width: 1000px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .btn-create { display: inline-block; background-color: #007bff; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; margin-bottom: 20px; }
+        .btn-create:hover { background-color: #0069d9; }
+        .empty-state { text-align: center; color: #777; padding: 40px 0; border: 2px dashed #ddd; border-radius: 6px; }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <h1>Photo System Dashboard</h1>
+    <a href="{% url 'logout' %}" class="btn-logout">Log Out</a>
+</div>
+
+<div class="container">
+    <h2>My Recipe Albums</h2>
+    <a href="{% url 'album_create' %}" class="btn-create">+ Create New Album</a>
+
+    {% if albums %}
+        <ul>
+        {% for album in albums %}
+            <li><strong><a href="{% url 'album_detail' album.pk %}">{{ album.title }}</a></strong> - {{ album.description }}</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <div class="empty-state">
+            <h3>No collections found</h3>
+            <p>Get started by creating your very first database-linked album above!</p>
+        </div>
+    {% endif %}
+</div>
+
+</body>
+</html>
