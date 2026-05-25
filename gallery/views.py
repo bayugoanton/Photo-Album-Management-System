@@ -56,13 +56,6 @@ class AlbumUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     success_url = reverse_lazy('album_list')
     def test_func(self):
         return self.get_object().created_by == self.request.user or self.request.user.is_staff
-    
-
-class AlbumUpdateView(UpdateView):
-    model = Album
-    fields = ['title', 'description', 'image'] # Include the image field here
-    template_name = 'gallery/edit.html'
-    success_url = '/dashboard/' # Or your list view URL
 
 class AlbumDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Album
