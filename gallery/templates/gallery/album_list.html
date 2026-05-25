@@ -14,6 +14,10 @@
         .btn-logout:hover { background-color: #c0392b; }
 
         .container { max-width: 900px; margin: 40px auto; background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        
+        /* Message Styles */
+        .success-box { background-color: #d4edda; color: #155724; padding: 12px 15px; border-radius: 6px; margin-bottom: 20px; border: 1px solid #c3e6cb; }
+        
         .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
         .btn-create { background-color: var(--primary); color: white; text-decoration: none; padding: 12px 25px; border-radius: 8px; font-weight: 600; transition: transform 0.2s; }
         .btn-create:hover { transform: translateY(-2px); background-color: #357abd; }
@@ -25,7 +29,6 @@
         .album-info h3 { margin: 0; font-size: 18px; color: #333; }
         .album-info p { margin: 5px 0 0; color: #777; font-size: 14px; }
         
-        /* New Actions Layout */
         .actions-container { text-align: right; }
         .actions-label { display: block; font-size: 10px; color: #999; text-transform: uppercase; margin-bottom: 5px; font-weight: bold; }
         .actions-group { display: flex; gap: 8px; }
@@ -45,6 +48,14 @@
 </div>
 
 <div class="container">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="success-box">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
     <div class="header-row">
         <h2>My Collections</h2>
         <a href="{% url 'album_create' %}" class="btn-create">+ Create New Album</a>

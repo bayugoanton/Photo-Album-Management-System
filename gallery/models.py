@@ -5,29 +5,35 @@ from cloudinary.models import CloudinaryField
 class Album(models.Model):
     """
     Groups individual photos together. 
-    The 'related_name' on the Photo model allows us to use 
-    album.photos.all in our templates.
+    The 'related_name' on the Album model allows us to easily access 
+    user.albums.all() in our code.
     """
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to='albums/', default='placeholder.jpg')
     
-    # Track the creator of the album
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='albums')
+    # Track the creator of the album. 'db_index=True' makes filtering by user much faster.
+    created_by = models.ForeignKey(
+        User, 
+        on_delete=models.CASCADE, 
+        related_name='albums',
+        db_index=True 
+    )
     
     is_admin_only = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
 
+    class Meta:
+        ordering = ['-created_at'] # Shows newest albums first by default
+
 
 class RecipePhoto(models.Model):
     """
-    Stores individual recipe photos. 
-    The ForeignKey links each photo to one specific Album.
+    Stores individual recipe photos linked to a specific Album.
     """
-    # The 'related_name' is the key that enables the .photos.all loop
     album = models.ForeignKey(
         Album, 
         on_delete=models.CASCADE, 
@@ -38,7 +44,11 @@ class RecipePhoto(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
     image = CloudinaryField('image')
-    uploaded_at = models.DateTimeField(auto_now_add=True)   
+    uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.title} (Album: {self.album.title if self.album else 'None'})"
+        album_name = self.album.title if self.album else 'None'
+        return f"{self.title} (Album: {album_name})"
+
+    class Meta:
+        ordering = ['-uploaded_at'] # Shows newest photos first
