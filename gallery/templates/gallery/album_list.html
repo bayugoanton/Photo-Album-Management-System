@@ -3,57 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Photo Gallery Workspace</title>
+    <title>Photo Gallery Dashboard</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 20px; }
-        .navbar { display: flex; justify-content: space-between; align-items: center; background: #343a40; padding: 10px 20px; border-radius: 6px; color: white; margin-bottom: 30px; }
-        .navbar h1 { margin: 0; font-size: 20px; }
-        .btn-logout { background-color: #dc3545; color: white; text-decoration: none; padding: 8px 15px; border-radius: 4px; font-weight: bold; font-size: 14px; }
-        .container { max-width: 1000px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-        .btn-create { background-color: #007bff; color: white; text-decoration: none; padding: 10px 20px; border-radius: 4px; font-weight: bold; margin-bottom: 20px; display: inline-block; }
-        .album-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #eee; }
-        .actions { display: flex; gap: 10px; }
-        .btn-edit { background: #ffc107; color: #000; padding: 5px 10px; text-decoration: none; border-radius: 3px; font-size: 12px; }
-        .btn-delete { background: #dc3545; color: #fff; padding: 5px 10px; border: none; border-radius: 3px; font-size: 12px; cursor: pointer; }
+        :root { --primary: #4a90e2; --danger: #e74c3c; --edit: #f39c12; --bg: #f8f9fa; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); margin: 0; padding: 20px; }
+        
+        .navbar { display: flex; justify-content: space-between; align-items: center; background: #2c3e50; padding: 15px 30px; border-radius: 12px; color: white; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .navbar h1 { margin: 0; font-size: 22px; letter-spacing: 1px; }
+        .btn-logout { background-color: var(--danger); color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.3s; }
+        .btn-logout:hover { background-color: #c0392b; }
+
+        .container { max-width: 900px; margin: 40px auto; background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .btn-create { background-color: var(--primary); color: white; text-decoration: none; padding: 12px 25px; border-radius: 8px; font-weight: 600; transition: transform 0.2s; }
+        .btn-create:hover { transform: translateY(-2px); background-color: #357abd; }
+
+        .album-list { display: flex; flex-direction: column; gap: 15px; }
+        .album-item { display: flex; justify-content: space-between; align-items: center; padding: 20px; border: 1px solid #eee; border-radius: 10px; transition: 0.3s; }
+        .album-item:hover { border-color: var(--primary); background: #fdfdfd; }
+        
+        .album-info h3 { margin: 0; font-size: 18px; color: #333; }
+        .album-info p { margin: 5px 0 0; color: #777; font-size: 14px; }
+        
+        /* New Actions Layout */
+        .actions-container { text-align: right; }
+        .actions-label { display: block; font-size: 10px; color: #999; text-transform: uppercase; margin-bottom: 5px; font-weight: bold; }
+        .actions-group { display: flex; gap: 8px; }
+        .btn-edit, .btn-delete { padding: 6px 12px; border-radius: 5px; text-decoration: none; font-size: 12px; font-weight: bold; border: none; cursor: pointer; }
+        .btn-edit { background: var(--edit); color: white; }
+        .btn-delete { background: var(--danger); color: white; }
     </style>
 </head>
 <body>
 
 <div class="navbar">
-    <h1>Photo System Dashboard</h1>
-    <form method="POST" action="{% url 'logout' %}" style="display:inline;">
-    {% csrf_token %}
-    <button type="submit" class="btn-logout" style="border:none; cursor:pointer;">Log Out</button>
-</form>
+    <h1>📸 Gallery Dashboard</h1>
+    <form method="POST" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn-logout">Log Out</button>
+    </form>
 </div>
 
-
-
 <div class="container">
-    <h2>My Albums</h2>
-    <a href="{% url 'album_create' %}" class="btn-create">+ Create New Album</a>
+    <div class="header-row">
+        <h2>My Collections</h2>
+        <a href="{% url 'album_create' %}" class="btn-create">+ Create New Album</a>
+    </div>
 
-    {% if albums %}
+    <div class="album-list">
         {% for album in albums %}
             <div class="album-item">
-                <div>
-                    <strong><a href="{% url 'album_detail' album.pk %}">{{ album.title }}</a></strong>
-                    <p style="margin: 5px 0 0; color: #666;">{{ album.description }}</p>
+                <div class="album-info">
+                    <h3><a href="{% url 'album_detail' album.pk %}" style="text-decoration:none; color:inherit;">{{ album.title }}</a></h3>
+                    <p>{{ album.description }}</p>
                 </div>
-                <div class="actions">
-                    <a href="{% url 'album_update' album.pk %}" class="btn-edit">Edit</a>
-                    <form method="POST" action="{% url 'album_delete' album.pk %}">
-                        {% csrf_token %}
-                        <button type="submit" class="btn-delete" onclick="return confirm('Are you sure?')">Delete</button>
-                    </form>
+                
+                <div class="actions-container">
+                    <span class="actions-label">Actions</span>
+                    <div class="actions-group">
+                        <a href="{% url 'album_update' album.pk %}" class="btn-edit">Edit</a>
+                        <form method="POST" action="{% url 'album_delete' album.pk %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-delete" onclick="return confirm('Delete this album?')">Delete</button>
+                        </form>
+                    </div>
                 </div>
             </div>
+        {% empty %}
+            <div style="text-align: center; padding: 50px; color: #aaa;">
+                <p>No albums yet. Get started by creating one!</p>
+            </div>
         {% endfor %}
-    {% else %}
-        <div style="text-align: center; color: #777; padding: 40px 0;">
-            <h3>No collections found</h3>
-        </div>
-    {% endif %}
+    </div>
 </div>
 
 </body>
