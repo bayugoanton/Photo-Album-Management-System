@@ -22,11 +22,9 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'your-default-secret-key-for-dev')
 # SECURITY WARNING: Don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-# --- FIXED ALLOWED_HOSTS ---
-# Render handles routing at the infrastructure level. 
-# Using '*' or the specific Render domain is required.
-# We prioritize the environment variable, falling back to a safe wildcard.
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
+
+# Render handles routing at the infrastructure level, making this safe.
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 INSTALLED_APPS = [
